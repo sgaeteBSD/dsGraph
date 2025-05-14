@@ -6,30 +6,27 @@
 
 #include <fstream>
 #include "Node.h"
-//#include "bst.h"
+#include "graph.h"
 #include <stdio.h>
 
 using namespace std;
 
-//void addFile(bst &tree);
-void print(Node* current, int depth);
 void quitter(bool &input);
 
 int main() {
-  //bst tree;
+  Graph graph;
   bool input = true;
 
-  //addFile(tree);
   cout << "This is a graph creator." << endl;
   
   while (input == true) { //command selector
 
     bool exist = false;
-    //    if (tree.getRoot() != NULL) {
+    if (graph.getIndex('A') != -1) {
       exist = true;
-    //}
+    }
     
-    cout << "Your commands are ad: Add, fl: File, pr: Print, sr: Search, rm: Remove, and qt: Quit." << endl;
+    cout << "Your commands are adv: Add Vertex, ade: Add Edge, rmv: Remove Vertex, rme: Remove Edge, pr: Print, sr: Search, and qt: Quit." << endl;
     cout << endl;
     cout << "Input a command." << endl;
     char command[15] = ""; //make sure to fit chars + 1 terminating
@@ -38,23 +35,32 @@ int main() {
     cin.ignore();
     
     
-    if (strcmp(command, "ad") == 0) {
-	int add = 0;
-	cout << "Number to add:" << endl;
+    if (strcmp(command, "adv") == 0) {
+	char add = '\0';
+	cout << "Vertex label to add:" << endl;
 	cin >> add;
-	//tree.insert(tree.getRoot(), add, NULL);
+	graph.addVert(add);
     }
-    else if (strcmp(command, "fl") == 0) {
-      //addFile(tree);
+    else if (strcmp(command, "ade") == 0) {
+	char add1 = '\0';
+	char add2 = '\0';
+	int add3 = 0;
+	cout << "Starting vertex:" << endl;
+	cin >> add1;
+	cout << "Ending vertex:" << endl;
+	cin >> add2;
+	cout << "Edge weight:" << endl;
+	cin >> add3;
+	graph.addEdge(add1, add2, add3);
     }
     else if (strcmp(command, "sr") == 0) {
       if (exist == true) {
-	int key = 0;
+	char key = '\0';
 	cout << "Number to search:" << endl;
 	cin >> key;
-	//if (tree.search(key, true) != NULL) {
-	//cout << "The number " << key << " exists in the tree." << endl;
-	//}
+	if (graph.getIndex(key) != -1) {
+	  cout << "The vertex '" << key << "' exists in the tree." << endl;
+	}
       }
       else {
 	cout << "Your graph is empty!" << endl;
@@ -62,21 +68,35 @@ int main() {
     }
     else if (strcmp(command, "pr") == 0) {
       if (exist == true) {
-	//print(tree.getRoot(), 0);
+	graph.print();
       }
       else {
 	cout << "Your graph is empty!" << endl;
       }
     }
-    else if (strcmp(command, "rm") == 0) {
+    else if (strcmp(command, "rmv") == 0) {
       if (exist == true) {
-	int key;
-	cout << "Number to remove:" << endl;
+	char key;
+	cout << "Vertex label to remove:" << endl;
 	cin >> key;
-	//tree.remove(tree.getRoot(), key);
+	graph.rmVert(key);
       }
       else { 
 	cout << "Your graph is empty!" << endl;
+      }
+    }
+    else if (strcmp(command, "rme") == 0) {
+      if (exist == true) {
+	char rm1 = '\0';
+	char rm2 = '\0';
+	cout << "Starting vertex:" << endl;
+	cin >> rm1;
+	cout << "Ending vertex:" << endl;
+	cin >> rm2;
+	graph.rmEdge(rm1, rm2);
+      }
+      else { 
+	cout << "Your graph has no edges!" << endl;
       }
     }
     else if (strcmp(command, "qt") == 0) {

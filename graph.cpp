@@ -1,4 +1,4 @@
-#include "graph.cpp"
+#include "graph.h"
 
 Graph::Graph() {
   //constructor
@@ -50,11 +50,46 @@ void Graph::addEdge(char from, char to, int weight) {
 }
 
 void Graph::rmVert(char data) {
-  
+  int ind = getIndex(data);
+  if (ind == -1) {
+    cout << "Vertex '" << data << "' was not found." << endl;
+    return;
+  }
+
+  for (int a = ind; a < vertCt-1; a++) { //shift labels
+    vertLbls[a] = vertLbls[a+1];
+  }
+  vertLbls[vertCt-1] = '\0';
+
+  //shift table rows up
+  for (int a = ind; a < vertCt-1; a++) {
+    for (int b = 0; b < vertCt; b++) {
+      table[a][b] = table[a+1][b];
+    }
+  }
+
+  //shift table cols up
+  for (int a = 0; a < vertCt-1; a++) {
+    for (int b = ind; b < vertCt-1; b++) {
+      table[a][b] = table[a][b+1];
+    }
+  }
+
+  vertCt--;
+  cout << "Vertex '" << data << "' was removed." << endl;
 }
 
 void Graph::rmEdge(char from, char to) {
-  
+  int fromID = getIndex(from);
+  int toID = getIndex(to);
+
+  if (fromID == -1 || toID == -1) {
+    cout << "One or more vertices were not found!";
+    return;
+  }
+
+  table[fromID][toID] = 0;
+  cout << "Edge removed from '" << from << "' to '" << to << "'." << endl;
 }
 
 void Graph::print() {
@@ -67,17 +102,17 @@ void Graph::print() {
   for (int a = 0; a < vertCt; a++) {
     cout << vertLbls[a] << ": ";
     for (int b = 0; b < vertCt; b++) {
-      cout << table[a][b] << " ";
+      cout << table[b][a] << " ";
     }
     cout << endl;
   }
 }
 
-void search(char start, char end) {
-  
+void Graph::search(char start, char end) {
+  //  
 }
 
-int getIndex(char lbl) {
+int Graph::getIndex(char lbl) {
   for (int a = 0; a < vertCt; a++) {
     if (vertLbls[a] == lbl) {
       return a;
@@ -86,6 +121,6 @@ int getIndex(char lbl) {
   return -1; //we'll use -1 for anything not found in search
 }
 
-bool lblExists(char lbl) {
+bool Graph::lblExists(char lbl) {
   return (getIndex(lbl) != -1); //return true if found (>-1), false if not found (-1)
 }
