@@ -1,4 +1,5 @@
 #include "graph.h"
+#include <algorithm>
 
 Graph::Graph() {
   //constructor
@@ -109,7 +110,63 @@ void Graph::print() {
 }
 
 void Graph::search(char start, char end) {
-  //  
+  int startID = getIndex(start);
+  int endID = getIndex(end);
+  if (startID == -1 || endID == -1) {
+    cout << "One or more vertices were not found!";
+    return;
+  }
+
+  vector<int> dist(vertCt, -1);
+  vector<int> prev(vertCt, -1);
+  vector<bool> visited(vertCt, false);
+
+  priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+  dist[startID] = 0;
+  pq.push({0, startID});
+  while (!pq.empty()) {
+    int a = pq.top()[1];
+    pq.pop();
+
+    if (a == endID) break;
+    
+    if (visited[a]) {
+      continue;
+    }
+    visited[a] = true;
+
+    for (int b = 0; b < vertCt; b++) {
+      int weight = table[a][b];
+      if (weight > 0 && dist[a] + weight < dist[b]) {
+	dist[b] = dist[a] + weight;
+	prev[b] = a;
+	pq.push({dist[b], b});
+      }
+    }
+  }
+  //find the actual path
+  vector<int> path;
+  int c = endID;
+
+  if (prev[c] != -1 || c == startID) {
+    while (c != -1) {
+      path.push_back(c);
+      c = prev[c];
+    }
+
+    reverse(path.begin(), path.end());
+
+    cout << "Shortest path from '" << start << "' to '" << end << "': ";
+    for (int a = 0; a < path.size(); a++) {
+      cout << vertLbls[path[a]];
+      if (a < path.size()-1) {
+	cout << " -> ";
+      }
+      cout << "\nTotal weight: " << dist[endID] << endl;
+    }
+  } else {
+    cout << "No path exists from '" << start << "' to '" << end << "'." << endl;
+  }
 }
 
 int Graph::getIndex(char lbl) {
@@ -123,17 +180,4 @@ int Graph::getIndex(char lbl) {
 
 bool Graph::lblExists(char lbl) {
   return (getIndex(lbl) != -1); //return true if found (>-1), false if not found (-1)
-}
-
-vector<int> Graph::Dstra(char V, Graph graph) {
-  queue q;
-  vector<int> weight;
-  vector<Node*> prevs;
-  for (int a = 0; a < vertCt; a++) {
-    b = getIndex(vertLbls[a]);
-    weight[b] = INT_MAX;
-    //prevs
-    q.enqueue(); //fix queue
-  }
-  weight[getIndex(V)] = 0;
 }

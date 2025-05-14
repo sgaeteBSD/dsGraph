@@ -55,15 +55,16 @@ int main() {
     }
     else if (strcmp(command, "sr") == 0) {
       if (exist == true) {
-	char key = '\0';
-	cout << "Number to search:" << endl;
-	cin >> key;
-	if (graph.getIndex(key) != -1) {
-	  cout << "The vertex '" << key << "' exists in the tree." << endl;
-	}
+	char rm1 = '\0';
+	char rm2 = '\0';
+	cout << "Starting vertex:" << endl;
+	cin >> rm1;
+	cout << "Ending vertex:" << endl;
+	cin >> rm2;
+	graph.search(rm1, rm2);
       }
-      else {
-	cout << "Your graph is empty!" << endl;
+      else { 
+	cout << "Your graph has no edges!" << endl;
       }
     }
     else if (strcmp(command, "pr") == 0) {
