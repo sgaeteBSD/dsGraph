@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <vector>
 #include "Node.h"
 #include "queue.h"
 

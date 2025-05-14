@@ -124,3 +124,16 @@ int Graph::getIndex(char lbl) {
 bool Graph::lblExists(char lbl) {
   return (getIndex(lbl) != -1); //return true if found (>-1), false if not found (-1)
 }
+
+vector<int> Graph::Dstra(char V, Graph graph) {
+  queue q;
+  vector<int> weight;
+  vector<Node*> prevs;
+  for (int a = 0; a < vertCt; a++) {
+    b = getIndex(vertLbls[a]);
+    weight[b] = INT_MAX;
+    //prevs
+    q.enqueue(); //fix queue
+  }
+  weight[getIndex(V)] = 0;
+}
