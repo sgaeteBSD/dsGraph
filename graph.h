@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include "Node.h"
+#include "queue.h"
 
 using namespace std;
 
