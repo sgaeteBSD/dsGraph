@@ -3,8 +3,7 @@
 
 #include <vector>
 #include "Node.h"
-#include "queue.h"
-#include <queue>
+#include <queue> //std queue
 
 using namespace std;
 
@@ -22,7 +21,7 @@ public:
   int getIndex(char lbl); //will map label to index
   bool lblExists(char lbl);
 private:
-  int table[20][20]; //fixed size?
+  int table[20][20]; //fixed size limit
   char vertLbls[20]; //index to labels
   int vertCt; //count
 };
