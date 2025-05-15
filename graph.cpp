@@ -125,22 +125,24 @@ void Graph::search(char start, char end) {
   dist[startID] = 0;
   pq.push({0, startID});
   while (!pq.empty()) {
-    int a = pq.top()[1];
+    int u = pq.top()[1];
     pq.pop();
-
+    /*
     if (a == endID) break;
     
     if (visited[a]) {
       continue;
     }
     visited[a] = true;
-
+    */
+    
     for (int b = 0; b < vertCt; b++) {
-      int weight = table[a][b];
-      if (weight > 0 && dist[a] + weight < dist[b]) {
-	dist[b] = dist[a] + weight;
-	prev[b] = a;
-	pq.push({dist[b], b});
+      int v = getIndex(table[b]); //table[b] is wrong
+      int weight = table[u][v];
+      if (dist[u] + weight < dist[v]) {
+	dist[v] = dist[u] + weight;
+	prev[v] = u;
+	pq.push({dist[v], v});
       }
     }
   }
