@@ -1,5 +1,6 @@
 #include "graph.h"
 #include <algorithm>
+#include <climits>
 
 Graph::Graph() {
   //constructor
@@ -117,29 +118,28 @@ void Graph::search(char start, char end) {
     return;
   }
 
-  vector<int> dist(vertCt, -1);
+  vector<int> dist(vertCt, INT_MAX);
   vector<int> prev(vertCt, -1);
   vector<bool> visited(vertCt, false);
 
-  priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+  priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
   dist[startID] = 0;
   pq.push({0, startID});
   while (!pq.empty()) {
-    int u = pq.top()[1];
+    int u = pq.top().second;
     pq.pop();
     /*
     if (a == endID) break;
-    
-    if (visited[a]) {
+    */
+    if (visited[u]) {
       continue;
     }
-    visited[a] = true;
-    */
+    visited[u] = true;
     
-    for (int b = 0; b < vertCt; b++) {
-      int v = getIndex(table[b]); //table[b] is wrong
+    
+    for (int v = 0; v < vertCt; v++) {
       int weight = table[u][v];
-      if (dist[u] + weight < dist[v]) {
+      if (weight > 0 && dist[u] + weight < dist[v]) {
 	dist[v] = dist[u] + weight;
 	prev[v] = u;
 	pq.push({dist[v], v});
@@ -150,7 +150,7 @@ void Graph::search(char start, char end) {
   vector<int> path;
   int c = endID;
 
-  if (prev[c] != -1 || c == startID) {
+  if (prev[c] != INT_MAX || c == startID) {
     while (c != -1) {
       path.push_back(c);
       c = prev[c];
@@ -164,8 +164,9 @@ void Graph::search(char start, char end) {
       if (a < path.size()-1) {
 	cout << " -> ";
       }
-      cout << "\nTotal weight: " << dist[endID] << endl;
     }
+    cout << "\nTotal weight: " << dist[endID] << endl;
+    cout << endl;
   } else {
     cout << "No path exists from '" << start << "' to '" << end << "'." << endl;
   }
